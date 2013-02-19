@@ -17,23 +17,23 @@ var errorOutput = function(error){
 
 // definitions
 
-var bump = CLOS.defGeneric('bump');
+var bump = CLOS.defGeneric();
 
-CLOS.defMethod('bump', [ball, floor], function(x, y){
+CLOS.defMethod(bump, [ball, floor], function(x, y){
     bumpOutput(x, y, 'bounce');
 });
-CLOS.defMethod('bump', [glass, floor], function(x, y){
+CLOS.defMethod(bump, [glass, floor], function(x, y){
     bumpOutput(x, y, 'crash');
 });
-CLOS.defMethod('bump', [stick, floor], function(x, y){
+CLOS.defMethod(bump, [stick, floor], function(x, y){
     bumpOutput(x, y, 'knock');
 });
-CLOS.defMethod('bump', [undefined, carpet], function(x, y){
+CLOS.defMethod(bump, [undefined, carpet], function(x, y){
     bumpOutput(x, y, 'silence');
 });
 
 /* //equiv to <top>
-CLOS.defMethod('bump', [undefined, undefined], function (x, y) {
+CLOS.defMethod(bump, [undefined, undefined], function (x, y) {
     bumpOutput(x, y, '<top>');
 });
 */
@@ -42,22 +42,19 @@ CLOS.defMethod('bump', [undefined, undefined], function (x, y) {
 
 var tests = [
     function () {
-        CLOS.call('bump', new ball, new floor); //bounce
+        bump(new ball, new floor); //bounce
     },
     function(){
-        CLOS.call('bump', new glass, new floor); // crash
+        bump(new glass, new floor); // crash
     },
     function(){
-        CLOS.call('bump', new stick, new carpet); // silence
+        bump(new stick, new carpet); // silence
     },
     function(){
-        CLOS.call('bump', new floor, new stick); // undefined method
-    },
-    function(){
-        CLOS.call('put', new glass, new floor); // undefined generic
+        bump(new floor, new stick); // undefined method
     },
     function () {
-        bump(new ball, new floor);
+        bump(new ball, new floor); //bounce
     }
 ];
 for(var i in tests){
