@@ -5,15 +5,16 @@
  */
 
 module.exports = (function () {
-    var CLOS = {};
-    CLOS.generics = {};
+    var CLOS = {}; //exported namespace
+
+    var generics = {};
 
     var _slice = Array.prototype.slice;
 
     //JS class
 
     /* constructor for generic-function object */
-    CLOS.generic = function(name){
+    function Generic (name) {
         var self = function () {
             CLOS.call.apply({}, [name].concat(_slice.call(arguments)));
         };
@@ -23,12 +24,12 @@ module.exports = (function () {
     };
 
     /* constructor for actual method generic functions delegates to */
-    CLOS.method = function(clause, body){
+    function Method (clause, body){
         this.clause = clause;
         this.body = body;
     };
 
-    CLOS.method.prototype.check = function(parameters){
+    Method.prototype.check = function(parameters){
         var i;
         for(i in this.clause){
             if (CLOS.isA(parameters[i], this.clause[i]))
@@ -38,7 +39,7 @@ module.exports = (function () {
         return true;
     };
 
-    /* -- /CLOS.method -- */
+    /* -- /Method -- */
 
     /* classes are plain constructor function  */
     CLOS.defClass = function (name, supr) {
@@ -66,28 +67,28 @@ module.exports = (function () {
 
     /* (define-generic `name`)  */
     CLOS.defGeneric = function(name){
-        return CLOS.generics[name] = new CLOS.generic(name);
+        return generics[name] = new Generic(name);
     };
 
     /* used internally  */
-    CLOS.getGeneric = function(name){
-        if(!CLOS.generics[name]){
+    var getGeneric = function(name){
+        if(!generics[name]){
             throw 'CLOS error: generic ' + name + ' is not defined';
         }
-        return CLOS.generics[name];
+        return generics[name];
     };
 
     /* (define-method name ((arg1 <class1>) (arg2 <class2>)) ...)  */
     /* CLOS.defMethod("name", [class1, class2], function (arg1, arg2) { ... }) */
     CLOS.defMethod = function(name, parameters, body){
-        var generic = CLOS.getGeneric(name);
-        generic.methods.push(new CLOS.method(parameters, body));
+        var generic = getGeneric(name);
+        generic.methods.push(new Method(parameters, body));
     };
 
     //call a generic function
     //current implementation does not include dispatch precedence so it may call multiple methods
     CLOS.call = function(name){
-        var generic = CLOS.getGeneric(name),
+        var generic = getGeneric(name),
             parameters = _slice.call(arguments, 1),
             method, i;
         //iterate over methods defined on the generic
