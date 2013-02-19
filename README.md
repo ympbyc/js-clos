@@ -33,6 +33,9 @@ CLOS.defMethod('bump', [glass, floor], function(x, y){
 CLOS.defMethod('bump', [stick, floor], function(x, y){
     bumpOutput(x, y, 'knock');
 });
+CLOS.defMethod('bump', [undefined, carpet], function(x, y){
+    bumpOutput(x, y, 'silence');
+});
 
 //call the methods
 CLOS.call('bump', new ball, new floor); //should bounce
