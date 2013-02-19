@@ -1,56 +1,67 @@
+var CLOS = require('./clos');
+
 // our domain
 
-var floor = {};
-var carpet = {};
-var ball = {};
-var glass = {};
-var stick = {};
+var floor  = CLOS.defClass("floor");
+var carpet = CLOS.defClass("carpet");
+var ball   = CLOS.defClass("ball");
+var glass  = CLOS.defClass("glass");
+var stick  = CLOS.defClass("stick");
 
 var bumpOutput = function(x, y, result){
-	alert(x + ' + ' + y + ' bump = ' + result);
+    console.log(x + ' + ' + y + ' bump = ' + result);
 };
 var errorOutput = function(error){
-	alert('[error] ' + error);
+    console.log('[error] ' + error);
 };
 
 // definitions
 
 CLOS.defGeneric('bump');
-CLOS.gefMethod('bump', [ball, floor], function(x, y){
-	bumpOutput(x, y, 'bounce');
+CLOS.defMethod('bump', [ball, floor], function(x, y){
+    bumpOutput(x, y, 'bounce');
 });
-CLOS.gefMethod('bump', [glass, floor], function(x, y){
-	bumpOutput(x, y, 'crash');
+CLOS.defMethod('bump', [glass, floor], function(x, y){
+    bumpOutput(x, y, 'crash');
 });
-CLOS.gefMethod('bump', [stick, floor], function(x, y){
-	bumpOutput(x, y, 'knock');
+CLOS.defMethod('bump', [stick, floor], function(x, y){
+    bumpOutput(x, y, 'knock');
 });
-CLOS.gefMethod('bump', [undefined, carpet], function(x, y){
-	bumpOutput(x, y, 'silence');
+CLOS.defMethod('bump', [undefined, carpet], function(x, y){
+    bumpOutput(x, y, 'silence');
 });
+
+/* //equiv to <top>
+CLOS.defMethod('bump', [undefined, undefined], function (x, y) {
+    bumpOutput(x, y, '<top>');
+});
+*/
 
 // test
 
 var tests = [
-	function(){
-		CLOS.call('bump', glass, floor); // crash
-	},
-	function(){
-		CLOS.call('bump', stick, carpet); // silence
-	},
-	function(){
-		CLOS.call('bump', floor, stick); // undefined method
-	},
-	function(){
-		CLOS.call('put', glass, floor); // undefined generic
-	}
+    function () {
+        CLOS.call('bump', new ball, new floor); //bounce
+    },
+    function(){
+        CLOS.call('bump', new glass, new floor); // crash
+    },
+    function(){
+        CLOS.call('bump', new stick, new carpet); // silence
+    },
+    function(){
+        CLOS.call('bump', new floor, new stick); // undefined method
+    },
+    function(){
+        CLOS.call('put', new glass, new floor); // undefined generic
+    }
 ];
 for(var i in tests){
-	var test = tests[i];
-	try{
-		test();
-	}
-	catch(error){
-		errorOutput(error);
-	}
+    var test = tests[i];
+    try{
+        test();
+    }
+    catch(error){
+        errorOutput(error);
+    }
 }
