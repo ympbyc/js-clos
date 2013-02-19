@@ -17,7 +17,8 @@ var errorOutput = function(error){
 
 // definitions
 
-CLOS.defGeneric('bump');
+var bump = CLOS.defGeneric('bump');
+
 CLOS.defMethod('bump', [ball, floor], function(x, y){
     bumpOutput(x, y, 'bounce');
 });
@@ -54,6 +55,9 @@ var tests = [
     },
     function(){
         CLOS.call('put', new glass, new floor); // undefined generic
+    },
+    function () {
+        bump(new ball, new floor);
     }
 ];
 for(var i in tests){
