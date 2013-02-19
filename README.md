@@ -21,7 +21,7 @@ var bumpOutput = function(x, y, result){
 };
 
 //define a generic function `bump`
-CLOS.defGeneric('bump');
+var bump = CLOS.defGeneric('bump');
 
 //define methods
 CLOS.defMethod('bump', [ball, floor], function(x, y){
@@ -38,10 +38,10 @@ CLOS.defMethod('bump', [undefined, carpet], function(x, y){
 });
 
 //call the methods
-CLOS.call('bump', new ball, new floor); //should bounce
-CLOS.call('bump', new glass, new floor); //should crash
-CLOS.call('bump', new stick, new carpet); //shold silince
+bump(new ball, new floor); //should bounce
+bump(new glass, new floor); //should crash
+bump(new stick, new carpet); //shold silince
 
-CLOS.call('bump', new floor, new stick); // undefined method
-CLOS.call('put', new glass, new floor); // undefined generic
+bump(new floor, new stick); // undefined method
+bump(new glass, new floor); // undefined generic
 ```
