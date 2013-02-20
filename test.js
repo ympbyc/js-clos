@@ -68,11 +68,11 @@ var tests = [
     },
 
     function () {
-        show(new Book({title:'Permutation City', author:'Greg Egan'}));
+        show(CLOS.make(Book, {title:'Permutation City', author:'Greg Egan'}));
         //Permutation City by Greg Egan
     },
     function () {
-        new Book({}); //Initialization error
+        CLOS.make(Book, {}); //Initialization error
     }
 ];
 for(var i in tests){

@@ -99,6 +99,11 @@ module.exports = (function () {
         return (obj[slot] !== undefined) && CLOS.isA(obj[slot], cls);
     };
 
+    //alias to `new`
+    CLOS.make = function (cls, obj) {
+        return new cls(obj);
+    };
+
     return CLOS;
 
 }());
