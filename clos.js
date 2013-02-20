@@ -30,10 +30,25 @@ module.exports = (function () {
 
         self.defMethod = function (parameters, body) {
             self.methods.push(new Method(parameters, body));
+            self.methods.sort(specificity);
         };
 
         self.methods = [];
         return self;             //this is valid
+    };
+
+    //sort function
+    function specificity (a, b) {
+        var aWin = 0, bWin = 0, i = 0, l = a.clause.length;
+        for (; i < l; ++i) {
+            if (CLOS.isA(a.clause[i], b.clause[i])) ++bWin;
+            if (CLOS.isA(b.clause[i], a.clause[i])) ++aWin;
+        }
+        return aWin < bWin
+             ? -1
+             : aWin > bWin
+             ? 1
+             : 0;
     };
 
     /* constructor for actual method generic functions delegates to */
@@ -68,6 +83,7 @@ module.exports = (function () {
                     this[key] = obj[key];
         };
         cl._pred = pred;
+        cl._parents = parents;
         cl.prototype._parents = parents;
         cl.prototype.toString = function () { return name || JSON.stringify(this);  };
         cl.prototype.isA = function (standard) { return CLOS.isA(this, standard); };
@@ -77,8 +93,10 @@ module.exports = (function () {
     //procedures
 
     CLOS.isA = function(example, standard){
+        if (!example) return false;
+        if (typeof(standard) == "string")
+            return (typeof(example) == standard);
         return (standard === undefined)
-            || (typeof(example) == standard)
             || (example instanceof standard)
             || (example._parents && example._parents.indexOf(standard) > -1);
     };
