@@ -7,14 +7,39 @@ A CLOS-like framework sketch on JavaScript.
 Usage
 -----
 
+### Simple Data Class ###
+
+```javascript
+//class, when `make`d, retruns a hash of values
+var _book_ = define_class(function (x) {
+    return slot_exists(x, 'title', "string")
+        && slot_exists(x, 'author', "string");
+});
+
+//generic function show
+var show = define_generic();
+
+//show an instance of book
+define_method(show, [_book_], function (b) {
+    return b.title + " by " b.author;
+});
+
+var p_city = make(_book_, {title:'Permutation City', author:'Greg Egan'});
+
+show(p_city);
+```
+
+
+### Multimethod ###
+
 ```javascript
 //define a bunch of classes
 //the name is optional
-var floor  = CLOS.defClass(undefined, "floor");
-var carpet = CLOS.defClass(undefined, "carpet");
-var ball   = CLOS.defClass(undefined, "ball");
-var glass  = CLOS.defClass(undefined, "glass");
-var stick  = CLOS.defClass(undefined, "stick");
+var floor  = define_class(undefined, "floor");
+var carpet = define_class(undefined, "carpet");
+var ball   = define_class(undefined, "ball");
+var glass  = define_class(undefined, "glass");
+var stick  = define_class(undefined, "stick");
 
 //function to display the result
 var bumpOutput = function(x, y, result){
@@ -22,21 +47,20 @@ var bumpOutput = function(x, y, result){
 };
 
 //define a generic function `bump`
-var bump = CLOS.defGeneric();
+var bump = define_generic();
 
 //define methods
-CLOS.defMethod(bump, [ball, floor], function(x, y){
+define_method(bump, [ball, floor], function(x, y){
     bumpOutput(x, y, 'bounce');
 });
-CLOS.defMethod(bump, [glass, floor], function(x, y){
+define_method(bump, [glass, floor], function(x, y){
     bumpOutput(x, y, 'crash');
 });
-CLOS.defMethod(bump, [stick, floor], function(x, y){
+define_method(bump, [stick, floor], function(x, y){
     bumpOutput(x, y, 'knock');
 });
 
 //if you prefer, the following works, too
-
 bump.defMethod([undefined, carpet], function(x, y){
     bumpOutput(x, y, 'silence');
 });

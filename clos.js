@@ -94,6 +94,10 @@ module.exports = (function () {
         throw 'CLOS error: cannot find specified method for ' + parameters;
     };
 
+    //for schemer
+    CLOS.define_method = CLOS.defMethod;
+    CLOS.define_generic = CLOS.defGeneric;
+    CLOS.define_class = CLOS.define_class;
 
     CLOS.slot_exists = function (obj, slot, cls) {
         return (obj[slot] !== undefined) && CLOS.isA(obj[slot], cls);
