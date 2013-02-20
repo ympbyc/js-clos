@@ -101,7 +101,7 @@ module.exports = (function () {
     //for schemer
     CLOS.define_method = CLOS.defMethod;
     CLOS.define_generic = CLOS.defGeneric;
-    CLOS.define_class = CLOS.define_class;
+    CLOS.define_class = CLOS.defClass;
 
     CLOS.slot_exists = function (obj, slot, cls) {
         return (obj[slot] !== undefined)
