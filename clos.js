@@ -15,8 +15,6 @@ if ( ! Array.prototype.forEach)
 module.exports = (function () {
     var CLOS = {}; //exported namespace
 
-    var generics = {};
-
     var _slice = Array.prototype.slice;
 
     //JS class
