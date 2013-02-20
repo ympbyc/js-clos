@@ -25,7 +25,7 @@ module.exports = (function () {
     function Generic () {
 
         var self = function () {
-            _call.call(self, _slice.call(arguments));
+            return _call.call(self, _slice.call(arguments));
         };
 
         self.defMethod = function (parameters, body) {
