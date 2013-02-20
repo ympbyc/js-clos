@@ -4,6 +4,14 @@
  * LLGPL -> http://opensource.franz.com/preamble.html
  */
 
+if ( ! Array.prototype.forEach)
+    Array.prototype.forEach = function (f) {
+        var i = 0, l = this.length;
+        for (; i < l; ++i)
+            f(this[i], i);
+    };
+
+
 module.exports = (function () {
     var CLOS = {}; //exported namespace
 
@@ -35,7 +43,7 @@ module.exports = (function () {
     };
 
     Method.prototype.check = function(parameters){
-        var i;
+        var i, self = this;
         for(i in this.clause){
             if (CLOS.isA(parameters[i], this.clause[i]))
                 continue;
