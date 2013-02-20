@@ -10,11 +10,11 @@ Usage
 ```javascript
 //define a bunch of classes
 //the name is optional
-var floor  = CLOS.defClass("floor");
-var carpet = CLOS.defClass("carpet");
-var ball   = CLOS.defClass("ball");
-var glass  = CLOS.defClass("glass");
-var stick  = CLOS.defClass("stick");
+var floor  = CLOS.defClass(undefined, "floor");
+var carpet = CLOS.defClass(undefined, "carpet");
+var ball   = CLOS.defClass(undefined, "ball");
+var glass  = CLOS.defClass(undefined, "glass");
+var stick  = CLOS.defClass(undefined, "stick");
 
 //function to display the result
 var bumpOutput = function(x, y, result){
