@@ -47,7 +47,8 @@ module.exports = (function () {
     /* -- /Method -- */
 
     /* classes are constructor functions  */
-    /* The constructor may take a predicate function that can be used for ducktyping */
+    /* The constructor may take a predicate function that ensures its instances
+     * to have specific properties */
     CLOS.defClass = function (pred, name) {
         pred = pred || function () {return true;};
         var cl = function (obj) {
