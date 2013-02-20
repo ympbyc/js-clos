@@ -42,11 +42,7 @@ module.exports = (function () {
             if (CLOS.isA(a.clause[i], b.clause[i])) ++bWin;
             if (CLOS.isA(b.clause[i], a.clause[i])) ++aWin;
         }
-        return aWin < bWin
-             ? -1
-             : aWin > bWin
-             ? 1
-             : 0;
+        return aWin - bWin;
     };
 
     /* constructor for actual method generic functions delegates to */
@@ -96,7 +92,14 @@ module.exports = (function () {
             return (typeof(example) == standard);
         return (standard === undefined)
             || (example instanceof standard)
-            || (example._parents && example._parents.indexOf(standard) > -1);
+            || hasParent(example._parents, standard);
+    };
+
+    //recursive function to see if the list of parents include the class
+    function hasParent (parents, standard) {
+        if ( ! parents || !parents[0]) return false;
+        if (parents[0] === standard) return true;
+        return hasParent(parents[0]._parents, standard) || hasParent(parents.slice(1), standard);
     };
 
     /* (define-generic)  */
@@ -105,6 +108,7 @@ module.exports = (function () {
     };
 
     //alias
+    //this function is expensive
     CLOS.defMethod = function (generic, params, body) {
         generic.defMethod(params, body);
     };

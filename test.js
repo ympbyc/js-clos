@@ -62,6 +62,17 @@ CLOS.defMethod(burn, [Flammable], function (f) {
     console.log(f + " burnt in " + f.burnTime + " seconds.");
 });
 
+
+//method precedence test
+var Foo = CLOS.defClass([]);
+var Bar = CLOS.defClass([Foo]);
+var Baz = CLOS.defClass([Bar]);
+var alice = CLOS.defGeneric();
+CLOS.defMethod(alice, [Bar, Foo], function () { console.log("bar foo"); });
+CLOS.defMethod(alice, [Bar, Bar], function () { console.log("bar bar"); });
+CLOS.defMethod(alice, [Baz, Baz], function () { console.log("baz baz"); });
+CLOS.defMethod(alice, [Bar, Baz], function () { console.log("bar baz"); });
+
 // test
 
 var tests = [
@@ -95,6 +106,12 @@ var tests = [
     function () {
         burn(CLOS.make(Flammable, {burnTime: 5, name: "gas tank"}));
         burn(CLOS.make(Magazine, {burnTime: 20, title:"Foo", author:"Bar"}));
+    },
+    function () {
+        alice(CLOS.make(Baz), CLOS.make(Baz)); //baz baz
+        alice(CLOS.make(Baz), CLOS.make(Bar)); //bar bar
+        alice(CLOS.make(Baz), CLOS.make(Foo)); //bar foo
+        alice(CLOS.make(Bar), CLOS.make(Baz)); //bar baz
     }
 ];
 for(var i in tests){
