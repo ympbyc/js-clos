@@ -17,6 +17,10 @@ module.exports = (function () {
 
     var _slice = Array.prototype.slice;
 
+    CLOS.options = {};
+    CLOS.options.dispatchBasedOnSpecificity = true;
+    CLOS.options.deepLookupParent = true;
+
     //JS class
 
     /* constructor for generic-function object */
@@ -28,7 +32,8 @@ module.exports = (function () {
 
         self.defMethod = function (parameters, body) {
             self.methods.push(new Method(parameters, body));
-            self.methods.sort(specificity);
+            if (CLOS.options.dispatchBasedOnSpecificity)
+                self.methods.sort(specificity);
         };
 
         self.methods = [];
@@ -95,12 +100,20 @@ module.exports = (function () {
             || hasParent(example._parents, standard);
     };
 
-    //recursive function to see if the list of parents include the class
-    function hasParent (parents, standard) {
-        if ( ! parents || !parents[0]) return false;
-        if (parents[0] === standard) return true;
-        return hasParent(parents[0]._parents, standard) || hasParent(parents.slice(1), standard);
-    };
+    var hasParent;
+    if (CLOS.options.deepLookupParent)
+        //recursive function to see if the list of parents include the class
+        hasParent = function (parents, standard) {
+            if ( ! parents || !parents[0]) return false;
+            if (parents[0] === standard) return true;
+            return hasParent(parents[0]._parents, standard) || hasParent(parents.slice(1), standard);
+        };
+    else
+        //shallow lookup
+        hasParent = function (parents, standard) {
+            return parents.indexOf(standard) > -1;
+        };
+
 
     /* (define-generic)  */
     CLOS.defGeneric = function () {
