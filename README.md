@@ -1,7 +1,11 @@
 JS-CLOS
 =======
 
-A CLOS-like framework sketch on JavaScript.
+A CLOS-like object system in JavaScript.
+
++ Multiple inheritance
++ Multimethod
++ Type checking on construction
 
 
 Usage
@@ -11,7 +15,7 @@ Usage
 
 ```javascript
 //class, when `make`d, retruns a hash of values
-var _book_ = define_class(function (x) {
+var _book_ = define_class([], function (x) {
     return slot_exists(x, 'title', "string")
         && slot_exists(x, 'author', "string");
 });
@@ -21,7 +25,7 @@ var show = define_generic();
 
 //show an instance of book
 define_method(show, [_book_], function (b) {
-    return b.title + " by " b.author;
+    return b.title + " by " + b.author;
 });
 
 var p_city = make(_book_, {title:'Permutation City', author:'Greg Egan'});
@@ -35,11 +39,11 @@ show(p_city);
 ```javascript
 //define a bunch of classes
 //the name is optional
-var floor  = define_class(undefined, "floor");
-var carpet = define_class(undefined, "carpet");
-var ball   = define_class(undefined, "ball");
-var glass  = define_class(undefined, "glass");
-var stick  = define_class(undefined, "stick");
+var floor  = define_class([], undefined, "floor");
+var carpet = define_class([], undefined, "carpet");
+var ball   = define_class([], undefined, "ball");
+var glass  = define_class([], undefined, "glass");
+var stick  = define_class([], undefined, "stick");
 
 //function to display the result
 var bumpOutput = function(x, y, result){
@@ -71,5 +75,4 @@ bump(new glass, new floor); //should crash
 bump(new stick, new carpet); //shold silince
 
 bump(new floor, new stick); // undefined method
-bump(new glass, new floor); // undefined generic
 ```

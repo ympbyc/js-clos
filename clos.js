@@ -49,16 +49,19 @@ module.exports = (function () {
     /* classes are constructor functions  */
     /* The constructor may take a predicate function that ensures its instances
      * to have specific properties */
-    CLOS.defClass = function (pred, name) {
+    CLOS.defClass = function (parents, pred, name) {
         pred = pred || function () {return true;};
         var cl = function (obj) {
             var key;
+            parents.forEach(function (p) { return p._pred(obj); }); //check for exception
             if ( ! pred(obj)) throw "Initialization error";
             for (key in obj)
                 if (obj.hasOwnProperty(key))
                     this[key] = obj[key];
         };
-        cl.prototype.toString = function () { return name || 'aCLOSClass';  };
+        cl._pred = pred;
+        cl.prototype._parents = parents;
+        cl.prototype.toString = function () { return name || JSON.stringify(this);  };
         cl.prototype.isA = function (standard) { return CLOS.isA(this, standard); };
         return cl;
     };
@@ -68,7 +71,8 @@ module.exports = (function () {
     CLOS.isA = function(example, standard){
         return (standard === undefined)
             || (typeof(example) == standard)
-            || (example instanceof standard);
+            || (example instanceof standard)
+            || (example._parents && example._parents.indexOf(standard) > -1);
     };
 
     /* (define-generic)  */
@@ -100,7 +104,8 @@ module.exports = (function () {
     CLOS.define_class = CLOS.define_class;
 
     CLOS.slot_exists = function (obj, slot, cls) {
-        return (obj[slot] !== undefined) && CLOS.isA(obj[slot], cls);
+        return (obj[slot] !== undefined)
+            && cls ? CLOS.isA(obj[slot], cls) : true;
     };
 
     //alias to `new`
