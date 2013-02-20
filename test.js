@@ -2,11 +2,11 @@ var CLOS = require('./clos');
 
 // our domain
 
-var floor  = CLOS.defClass("floor");
-var carpet = CLOS.defClass("carpet");
-var ball   = CLOS.defClass("ball");
-var glass  = CLOS.defClass("glass");
-var stick  = CLOS.defClass("stick");
+var floor  = CLOS.defClass(undefined, "floor");
+var carpet = CLOS.defClass(undefined, "carpet");
+var ball   = CLOS.defClass(undefined, "ball");
+var glass  = CLOS.defClass(undefined, "glass");
+var stick  = CLOS.defClass(undefined, "stick");
 
 var bumpOutput = function(x, y, result){
     console.log(x + ' + ' + y + ' bump = ' + result);
@@ -38,6 +38,16 @@ CLOS.defMethod(bump, [undefined, undefined], function (x, y) {
 });
 */
 
+var Book = CLOS.defClass(function (x) {
+  return CLOS.slot_exists(x, 'title', "string") && CLOS.slot_exists(x, 'author', "string");
+});
+
+var show = CLOS.defGeneric();
+
+CLOS.defMethod(show, [Book], function (b) {
+    console.log(b.title + " by " + b.author);
+});
+
 // test
 
 var tests = [
@@ -55,6 +65,14 @@ var tests = [
     },
     function () {
         bump(new ball, new floor); //bounce
+    },
+
+    function () {
+        show(new Book({title:'Permutation City', author:'Greg Egan'}));
+        //Permutation City by Greg Egan
+    },
+    function () {
+        new Book({}); //Initialization error
     }
 ];
 for(var i in tests){
