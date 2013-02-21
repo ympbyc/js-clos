@@ -19,7 +19,6 @@ module.exports = (function () {
 
     CLOS.options = {};
     CLOS.options.dispatchBasedOnSpecificity = true;
-    CLOS.options.deepLookupParent = true;
 
     //JS class
 
@@ -81,9 +80,12 @@ module.exports = (function () {
                 if (obj.hasOwnProperty(key))
                     this[key] = obj[key];
         };
+        var flatParents = parents.reduce(function (acc, cur) {
+            return acc.concat(cur._parents);  }, parents);
         cl._pred = pred;
-        cl._parents = parents;
-        cl.prototype._parents = parents;
+        cl.prototype.constructor = cl;
+        cl._parents = flatParents;
+        cl.prototype._parents = flatParents;
         cl.prototype.toString = function () { return name || JSON.stringify(this);  };
         cl.prototype.isA = function (standard) { return CLOS.isA(this, standard); };
         return cl;
@@ -96,23 +98,14 @@ module.exports = (function () {
         if (typeof(standard) == "string")
             return (typeof(example) == standard);
         return (standard === undefined)
+            || (example === standard) //compare classes
             || (example instanceof standard)
             || hasParent(example._parents, standard);
     };
 
-    var hasParent;
-    if (CLOS.options.deepLookupParent)
-        //recursive function to see if the list of parents include the class
-        hasParent = function (parents, standard) {
-            if ( ! parents || !parents[0]) return false;
-            if (parents[0] === standard) return true;
-            return hasParent(parents[0]._parents, standard) || hasParent(parents.slice(1), standard);
-        };
-    else
-        //shallow lookup
-        hasParent = function (parents, standard) {
-            return parents.indexOf(standard) > -1;
-        };
+    function hasParent (parents, standard) {
+        return parents.indexOf(standard) > -1;
+    };
 
 
     /* (define-generic)  */
