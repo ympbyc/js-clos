@@ -74,8 +74,8 @@ module.exports = (function () {
         pred = pred || function () {return true;};
         var cl = function (obj) {
             var key;
-            parents.forEach(function (p) { return p._pred(obj); }); //check for exception
             if ( ! pred(obj)) throw "Initialization error";
+            parents.forEach(function (p) { return p._pred(obj); }); //check for exception
             for (key in obj)
                 if (obj.hasOwnProperty(key))
                     this[key] = obj[key];
