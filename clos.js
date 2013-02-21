@@ -93,17 +93,25 @@ module.exports = (function () {
 
     //procedures
 
-    CLOS.isA = function(example, standard){
-        if (!example) return false;
-        if (typeof(standard) == "string")
-            return (typeof(example) == standard);
-        return (standard === undefined)
-            || (example === standard) //compare classes
-            || (example instanceof standard)
-            || hasParent(example._parents, standard);
+    //more like a pattern-matching
+    CLOS.isA = function (example, standard) {
+        if (example === standard || ! example) return true;
+        switch(typeof(standard)) {
+            case "undefined":
+              return true;
+            case "string":
+              return (typeof(example) == standard);
+            case "function":
+            case "object":
+              return (example instanceof standard)
+                  || hasParent(example._parents, standard);
+            default:
+              return false;
+        }
     };
 
     function hasParent (parents, standard) {
+        if ( ! parents) return false;
         return parents.indexOf(standard) > -1;
     };
 

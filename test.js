@@ -73,6 +73,13 @@ CLOS.defMethod(alice, [Bar, Bar], function () { console.log("bar bar"); });
 CLOS.defMethod(alice, [Baz, Baz], function () { console.log("baz baz"); });
 CLOS.defMethod(alice, [Bar, Baz], function () { console.log("bar baz"); });
 
+//immidiate values
+var fib = CLOS.define_generic();
+CLOS.define_method(fib, [0], function (_) { return 1; });
+CLOS.define_method(fib, [1], function (_) { return 1; });
+CLOS.define_method(fib, ["number"], function (n) {
+    return fib(n - 1) + fib(n - 2); });
+
 // test
 
 var tests = [
@@ -112,6 +119,9 @@ var tests = [
         alice(CLOS.make(Baz), CLOS.make(Bar)); //bar bar
         alice(CLOS.make(Baz), CLOS.make(Foo)); //bar foo
         alice(CLOS.make(Bar), CLOS.make(Baz)); //bar baz
+    },
+    function () {
+        console.log(fib(10));
     }
 ];
 for(var i in tests){
