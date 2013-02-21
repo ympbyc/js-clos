@@ -71,6 +71,7 @@ module.exports = (function () {
     /* The constructor may take a predicate function that ensures its instances
      * to have specific properties */
     CLOS.defClass = function (parents, pred, name) {
+        parents = parents || [];
         pred = pred || function () {return true;};
         var cl = function (obj) {
             var key;
@@ -162,7 +163,7 @@ module.exports = (function () {
 
     //alias to `new`
     CLOS.make = function (cls, obj) {
-        return new cls(obj);
+        return new cls(obj || {});
     };
 
     return CLOS;
