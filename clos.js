@@ -94,8 +94,17 @@ module.exports = (function () {
     //procedures
 
     //more like a pattern-matching
+    /**
+     * passes when:
+     * example === standard
+     * standard === undefined
+     * typeof(example) == standard
+     * example instanceof standard
+     * member(example._parent, standard)
+     */
     CLOS.isA = function (example, standard) {
-        if (example === standard || ! example) return true;
+        if (example === standard) return true;
+        if (! example) return false;
         switch(typeof(standard)) {
             case "undefined":
               return true;
