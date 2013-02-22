@@ -6,6 +6,7 @@ A CLOS-like object system in JavaScript.
 + Multiple inheritance
 + Multimethod
 + Type checking on construction
++ ML (or Haskell) style datatype
 
 
 Usage
@@ -15,7 +16,7 @@ Usage
 
 ```javascript
 //class, when `make`d, retruns a hash of values
-var _book_ = define_class([], function (x) {
+var book = define_class([], function (x) {
     return slot_exists(x, 'title', "string")
         && slot_exists(x, 'author', "string");
 });
@@ -24,11 +25,11 @@ var _book_ = define_class([], function (x) {
 var show = define_generic();
 
 //show an instance of book
-define_method(show, [_book_], function (b) {
+define_method(show, [book], function (b) {
     return b.title + " by " + b.author;
 });
 
-var p_city = make(_book_, {title:'Permutation City', author:'Greg Egan'});
+var p_city = make(book, {title:'Permutation City', author:'Greg Egan'});
 
 show(p_city);
 ```
@@ -121,13 +122,20 @@ var show = define_generic();
 
 Takes:
 + **a generic function** *(required)*
-+ an array of **classes** that specifies the type of arguments given to the method *(required)*
++ an array of **patterns** that specifies the type of arguments given to the method *(required)*
 + a function that is the body of the method *(required)*
+
+A **pattern** is either
++ a class (compared with `instanceof`)
++ a value (compared with `===`)
++ a constructor (that is defined with `define_constructor`)
++ a string returned by `typeof` operator ("number", "function", etc)
++ undefined for wildcard
 
 Returns void.
 
 #### Syntax ####
-**define_method**( *generic function* , [ *classA* , *...* ], function ( *a* , *...* ) { *body* });
+**define_method**( *generic function* , [ *patternA* , *...* ], function ( *a* , *...* ) { *body* });
 
 #### Example ####
 
@@ -140,6 +148,34 @@ define_method(show, [x], function (a) {
   console.log("an instance of x");
 });
 ```
+
+### define_constructor ###
+
+`define_constructor` allows a class to have multiple constructors.
+
+Takes:
++ a class *(required)*
++ an initialization function *(optional)*
+
+Returns a constructor function.
+
+#### Syntax ####
+
+**define_constructor**( *class* , function (...) { return make(class, {...}); });
+
+#### Example ####
+
+```javascript
+var rank = define_class();
+var Ace = define_constructor(rank);
+var Jack = define_constructor(rank);
+var Queen = define_constructor(rank);
+var King = define_constructor(rank);
+var Num = define_constructor(rank, function (n) { return make(rank, {number: n});  });
+
+isA(Jack(), rank); //true
+```
+
 
 ### make ###
 
