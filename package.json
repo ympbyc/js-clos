@@ -1,0 +1,26 @@
+{
+  "name": "js-clos",
+  "preferGlobal": false,
+  "version": "0.1.0",
+  "author": "Дмитрий Пинский <demetrius@neverblued.info>",
+  "description": "CLOS-like object system",
+  "contributors": [{
+    "name": "Minori Yamashita",
+    "email": "ympbyc@gmail.com"
+  }],
+  "scripts": {
+    "test": "node ./test"
+  },
+  "main": "./clos",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ympbyc/js-clos.git"
+  },
+  "keywords": [
+    "CLOS",
+    "datatype",
+    "multimethod"
+  ],
+  "dependencies": {},
+  "license": "LLGPL"
+}
