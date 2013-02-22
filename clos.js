@@ -11,8 +11,18 @@ if ( ! Array.prototype.forEach)
             f(this[i], i);
     };
 
+if ( ! Array.prototype.reduce)
+    Array.prototype.reduce = function (f, init) {
+        var last = init,
+            i = 0, l = this.length;;
+        for (; i < l; ++i)
+            last = f(last, init);
+        return last;
+    };
 
 module.exports = (function () {
+    'use strict';
+
     var CLOS = {}; //exported namespace
 
     var _slice = Array.prototype.slice;
