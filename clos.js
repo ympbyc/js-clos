@@ -137,6 +137,18 @@ module.exports = (function () {
         generic.defMethod(params, body);
     };
 
+    //allow classes to have multiple constructors
+    //this is a monkey patch
+    CLOS.defConstructor = function (clas, f) {
+        var ctor = function () {
+            var val = f ? f.apply({}, _slice.call(arguments))
+                        : CLOS.make(clas);
+            val._parents.unshift(ctor);
+            return val;
+        };
+        return ctor;
+    };
+
     var _call = function (parameters) {
         var method, i;
         //iterate over methods defined on the generic
@@ -154,6 +166,7 @@ module.exports = (function () {
     CLOS.define_method = CLOS.defMethod;
     CLOS.define_generic = CLOS.defGeneric;
     CLOS.define_class = CLOS.defClass;
+    CLOS.define_constructor = CLOS.defConstructor;
     CLOS.is_a = CLOS.isA;
 
     CLOS.slot_exists = function (obj, slot, cls) {

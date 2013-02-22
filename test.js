@@ -80,11 +80,12 @@ CLOS.define_method(fib, [1], function (_) { return 1; });
 CLOS.define_method(fib, ["number"], function (n) {
     return fib(n - 1) + fib(n - 2); });
 
+
 // test
 
 var tests = [
     function () {
-        bump(new ball, new floor); //bounce
+        bump(ball, floor); //bounce
     },
     function(){
         bump(new glass, new floor); // crash
