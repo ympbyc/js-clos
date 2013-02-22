@@ -8,6 +8,10 @@ A CLOS-like object system in JavaScript.
 + Type checking on construction
 + ML (or Haskell) style datatype
 
+Examples use cases are shown in:
++ (https://gist.github.com/ympbyc/4996968)[example in coffeescript]
++ (https://gist.github.com/ympbyc/5010424)[ML style datatype example]
++ (http://qiita.com/items/5877294b97aaeaee5ae1)[Introduction in Japanese]
 
 Usage
 -----
