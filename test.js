@@ -74,7 +74,8 @@ CLOS.defMethod(alice, [Baz, Baz], function () { console.log("baz baz"); });
 CLOS.defMethod(alice, [Bar, Baz], function () { console.log("bar baz"); });
 
 //immidiate values
-var fib = CLOS.define_generic();
+//also tests for memoization
+var fib = CLOS.define_generic(true);
 CLOS.define_method(fib, [0], function (_) { return 1; });
 CLOS.define_method(fib, [1], function (_) { return 1; });
 CLOS.define_method(fib, ["number"], function (n) {

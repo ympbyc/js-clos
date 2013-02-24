@@ -33,11 +33,20 @@ module.exports = (function () {
     //JS class
 
     /* constructor for generic-function object */
-    function Generic () {
+    /* Generic functions support memoization.
+     * Because the user needs to wrap their function declaration,
+     * they deserve a sweet treat ;)  */
+    function Generic (memoize) {
 
-        var self = function () {
-            return _call.call(self, _slice.call(arguments));
-        };
+        var self = memoize
+          ? function () {
+              var args = _slice.call(arguments);
+              return self.memo[args]
+                  || (self.memo[args] = _call.call(self, args)); }
+          : function () {
+              return _call.call(self, _slice.call(arguments)); };
+
+        if (memoize) self.memo = {};
 
         self.defMethod = function (parameters, body) {
             self.methods.push(new Method(parameters, body));
@@ -137,8 +146,8 @@ module.exports = (function () {
 
 
     /* (define-generic)  */
-    CLOS.defGeneric = function () {
-        return new Generic();
+    CLOS.defGeneric = function (memoize) {
+        return new Generic(memoize || false);
     };
 
     //alias
@@ -159,6 +168,7 @@ module.exports = (function () {
         return ctor;
     };
 
+    //Call what is appropriate
     var _call = function (parameters) {
         var method, i;
         //iterate over methods defined on the generic
