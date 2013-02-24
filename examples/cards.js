@@ -1,4 +1,4 @@
-var c = require('../clos');
+var c = require('js-clos');
 
 with (c) {
 
