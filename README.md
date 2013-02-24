@@ -4,9 +4,12 @@ JS-CLOS
 A CLOS-like object system in JavaScript.
 
 + Multiple inheritance
-+ Multimethod
++ Multiple dispatch
 + Type checking on construction
 + ML (or Haskell) style datatype
++ Guarded functions (simple patternmatching)
++ Memoization (optional)
++ Partial application
 
 Examples use cases are shown in:
 + [example in coffeescript](https://gist.github.com/ympbyc/4996968)
@@ -15,6 +18,29 @@ Examples use cases are shown in:
 
 Usage
 -----
+
+### Guarded Functions and Memoization ###
+
+```javascript
+var fib = define_generic(true); //pass true to enable memoization
+define_method(fib, [0], function () { return 0; });
+define_method(fib, [1], function () { return 1; });
+define_method(fib, ["number"], function (n) {
+  return fib(n-1) + fib(n-2);
+});
+```
+
+### Partial Application ###
+
+```javascript
+p = require('./examples/prelude');
+var add = define_generic();
+define_method(add, ["number", "number"], function (a, b) { return a + b; });
+define_method(add, ["string", "string"], function (a, b) { return a + b; });
+
+p.map(add(2), [1,2,3,4,5]); //=> [3,4,5,6,7]
+p.map(p.flip(add)("!!!"), ["lisp", "alien", "rocks"]); //=> ["lisp!!!", "alien!!!", "rocks!!!"]
+```
 
 ### Simple Data Class ###
 

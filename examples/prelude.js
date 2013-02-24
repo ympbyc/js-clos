@@ -13,8 +13,13 @@ with (require('js-clos')) {
     var _hasProp = Object.prototype.hasOwnProperty;
 
     //function
+    var curry2 = ex.curry2 = function (f) {
+        return function (x) {
+            return function (y) { return f(x, y); };
+        };
+    };
     var flip = ex.flip = function (f) {
-        return function (x, y) { return f(y, x);  };
+        return curry2(function (x, y) { return f(y, x);  });
     };
 
     //sequence
