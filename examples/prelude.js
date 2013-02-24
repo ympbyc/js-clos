@@ -15,6 +15,7 @@ with (require('js-clos')) {
     //function
     var curry2 = ex.curry2 = function (f) {
         return function (x) {
+            if (arguments.length > 1) return f(x, arguments[1]);
             return function (y) { return f(x, y); };
         };
     };
