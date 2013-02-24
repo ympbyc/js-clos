@@ -9,7 +9,7 @@ var glass  = CLOS.defClass([], undefined, "glass");
 var stick  = CLOS.defClass([], undefined, "stick");
 
 var bumpOutput = function(x, y, result){
-    console.log(x + ' + ' + y + ' bump = ' + result);
+    console.log(/*x + ' + ' + y + ' bump = ' +*/ result);
 };
 var errorOutput = function(error){
     console.log('[error] ' + error);
@@ -81,6 +81,9 @@ CLOS.define_method(fib, [1], function (_) { return 1; });
 CLOS.define_method(fib, ["number"], function (n) {
     return fib(n - 1) + fib(n - 2); });
 
+//partial application
+var add = CLOS.define_generic();
+CLOS.define_method(add, ["number", "number"], function (a, b) { return a + b; });
 
 // test
 
@@ -124,6 +127,10 @@ var tests = [
     },
     function () {
         console.log(fib(10));
+    },
+    function () {
+        console.log("full application (expects 5): " + add(2, 3));
+        console.log("partial application (expects 5): " + add(2)(3));
     }
 ];
 for(var i in tests){
