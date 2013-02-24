@@ -169,7 +169,7 @@ module.exports = (function () {
                 return method.body.apply({}, parameters);
             }
         }
-        throw 'CLOS error: cannot find specified method for ' + parameters;
+        throw 'CLOS error: The method is not defined between ' + parameters.slice(-1) + ' and ' + parameters[parameters.length-1];
     };
 
     //for schemer
