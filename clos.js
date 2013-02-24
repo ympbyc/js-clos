@@ -102,11 +102,12 @@ module.exports = (function () {
         };
         var flatParents = parents.reduce(function (acc, cur) {
             return acc.concat(cur._parents);  }, parents);
+        var uniqId =  uuid();
         cl._pred = pred;
         cl.prototype.constructor = cl;
         cl._parents = flatParents;
         cl.prototype._parents = flatParents;
-        cl.prototype.toString = function () { return name || JSON.stringify(this);  };
+        cl.prototype.toString = function () { return name || "[object "+ uniqId  +"]";  };
         cl.prototype.isA = function (standard) { return CLOS.isA(this, standard); };
         return cl;
     };
@@ -181,6 +182,15 @@ module.exports = (function () {
         }
         throw 'CLOS error: The method is not defined between ' + parameters.slice(-1) + ' and ' + parameters[parameters.length-1];
     };
+
+   //helper
+   function uuid () {
+       var S4 = function() {
+           return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+       };
+       return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4() +S4());
+   }
+
 
     //for schemer
     CLOS.define_method = CLOS.defMethod;
