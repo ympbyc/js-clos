@@ -42,9 +42,9 @@ module.exports = (function () {
           ? function () {
               var args = _slice.call(arguments);
               return self.memo[args]
-                  || (self.memo[args] = _call.call(self, args)); }
+                  || (self.memo[args] = _call(self, args)); }
           : function () {
-              return _call.call(self, _slice.call(arguments)); };
+              return _call(self, _slice.call(arguments)); };
 
         if (memoize) self.memo = {};
 
@@ -76,7 +76,7 @@ module.exports = (function () {
 
     Method.prototype.check = function(parameters){
         var i, self = this;
-        for(i in this.clause){
+        for (i in this.clause) {
             if (CLOS.isA(parameters[i], this.clause[i]))
                 continue;
             return false;
@@ -170,15 +170,22 @@ module.exports = (function () {
     };
 
     //Call what is appropriate
-    var _call = function (parameters) {
+    var _call = function (generic, parameters) {
         var method, i;
         //iterate over methods defined on the generic
-        for(i in this.methods){
-            method = this.methods[i];
-            //checks if the given parameter matches the declared type
-            if(method.check(parameters)){
+        for(i in generic.methods){
+            method = generic.methods[i];
+
+            //checks whether the given parameter matches the declared type
+            if (method.check(parameters))
+                //call the body
                 return method.body.apply({}, parameters);
-            }
+
+            //curry if the number of arguments is too short
+            else if (method.clause.length > parameters.length)
+                return function () {
+                    return _call(generic, parameters.concat(_slice.call(arguments)));
+                };
         }
         throw 'CLOS error: The method is not defined between ' + parameters.slice(-1) + ' and ' + parameters[parameters.length-1];
     };
