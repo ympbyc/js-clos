@@ -187,7 +187,7 @@ module.exports = (function () {
                     return _call(generic, parameters.concat(_slice.call(arguments)));
                 };
         }
-        throw 'CLOS error: The method is not defined between ' + parameters.slice(-1) + ' and ' + parameters[parameters.length-1];
+        throw 'CLOS error: The method is not defined between ' + parameters.slice(0, -1) + ' and ' + parameters[parameters.length-1];
     };
 
    //helper
