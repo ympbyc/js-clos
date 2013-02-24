@@ -1,7 +1,7 @@
 {
   "name": "js-clos",
   "preferGlobal": false,
-  "version": "0.1.2",
+  "version": "0.1.4",
   "author": "Дмитрий Пинский <demetrius@neverblued.info>",
   "description": "CLOS-like object system",
   "contributors": [{
