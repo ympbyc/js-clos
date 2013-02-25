@@ -125,7 +125,7 @@ module.exports = (function () {
      */
     CLOS.isA = function (example, standard) {
         if (example === standard) return true;
-        if (! example) return false;
+        if (example === undefined) return false;
         switch(typeof(standard)) {
             case "undefined":
               return true;
