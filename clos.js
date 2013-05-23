@@ -4,23 +4,7 @@
  * LLGPL -> http://opensource.franz.com/preamble.html
  */
 
-if ( ! Array.prototype.forEach)
-    Array.prototype.forEach = function (f) {
-        var i = 0, l = this.length;
-        for (; i < l; ++i)
-            f(this[i], i);
-    };
-
-if ( ! Array.prototype.reduce)
-    Array.prototype.reduce = function (f, init) {
-        var last = init,
-            i = 0, l = this.length;;
-        for (; i < l; ++i)
-            last = f(last, init);
-        return last;
-    };
-
-module.exports = (function () {
+var CLOS = (function () {
     'use strict';
 
     var CLOS = {}; //exported namespace
@@ -219,3 +203,9 @@ module.exports = (function () {
     return CLOS;
 
 }());
+
+
+if (typeof module === "undefined" || typeof module.exports === "undefined")
+    this.CLOS = CLOS;
+else
+    module.exports = CLOS;
