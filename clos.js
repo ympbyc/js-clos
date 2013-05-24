@@ -113,6 +113,8 @@ var CLOS = (function () {
         switch(typeof(standard)) {
             case "undefined":
               return true;
+            case "null":
+              return false;
             case "string":
               return (typeof(example) == standard);
             case "function":
