@@ -108,8 +108,9 @@ var CLOS = (function () {
      * member(example._parent, standard)
      */
     CLOS.isA = function (example, standard) {
-        if (example === standard) return true;
+        if (example === standard)  return true;
         if (example === undefined) return false;
+        if (example === null || standard === null) return false;
         switch(typeof(standard)) {
             case "undefined":
               return true;
