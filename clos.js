@@ -3,6 +3,9 @@
  * Допускаю использование и распространение согласно
  * LLGPL -> http://opensource.franz.com/preamble.html
  */
+/*
+ * Modded heavily by Minori Yamashita <ympbyc@gmail.com>
+ */
 
 var CLOS = (function () {
     'use strict';
