@@ -154,6 +154,7 @@ var CLOS = (function () {
             val._parents.unshift(ctor);
             return val;
         };
+        ctor._pred = function () {return true};
         return ctor;
     };
 
